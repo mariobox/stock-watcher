@@ -14,6 +14,8 @@ Since each stock occupies half the screen (in medium to large viewports) you can
 
 The app uses jQuery's getJSON method to get information from https://iextrading.com/ free API. The getJSON function is wrapped in a function that executes at once and then executes again every 10 seconds via a setTimout() function.
 
+The page styling is done using Bootstrap 4's card class for the individual stock information.
+
 If the user doesn't input a selection of stock symbols the program will load the default portfolio which is hard coded in the stocks.js file. If you want to modify the default portfolio just edit the stocks.js file
 
 ### Customizing
