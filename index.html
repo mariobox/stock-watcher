@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>Stock Watcher</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+      body {
+        margin: 0 auto;
+        font-family: Roboto;
+        color: #555;
+      }
+      ul {
+        list-style-type: square;
+      }
+      .card {
+        margin-bottom: 10px;
+        margin-top: 10px;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>    
+  </head>
+  <body>
+    <div class="navbar navbar-dark bg-dark box-shadow">
+      <div class="container d-flex justify-content-between">
+        <a href="#" class="navbar-brand d-flex align-items-center">
+          <strong>Stock Watcher</strong>
+        </a>                 
+      </div>
+    </div>    
+    <div class="container">
+      <div>
+        <br />
+        <p>Input a list of stock symbols of companies you want to watch, separated by a comma:</p>
+        <form method="GET" action=".">
+          <input type="text" id="symbols" name="symbols">      
+          <button class="btn btn-primary" type="submit" id="submit">Submit</button>
+        </form>
+        <br />
+      </div>
+      <div class="row" id='stockinfo'></div>
+      <p>Information refreshes every 10 seconds.</p>
+      <p>Data provided for free by <a href="https://iextrading.com/developer">IEX</a>. View <a href="https://iextrading.com/api-exhibit-a/">IEX’s Terms of Use</a></p>.
+    </div>
+    <footer class="container">
+      <hr />
+      <p class="float-right"><a href="#">Back to top</a></p>
+      <p>Made by <a href="https://mariosanchez.org">Mario Sanchez Carrion</a> | <a href="#">Source Code</a></p>
+    </footer>
+    </main>
+    <script src="stocks.js"></script>
+  </body>
+</html>
