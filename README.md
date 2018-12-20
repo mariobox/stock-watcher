@@ -24,4 +24,4 @@ If you want to track different KPI's you need to go to the iextrading API and fi
 
 If you fork this repository and make changes, make sure to preserve the attribution to https://iextrading.com verbatim:
 
-<p>Data provided for free by <a href="https://iextrading.com/developer">IEX</a>. View <a href="https://iextrading.com/api-exhibit-a/">IEX’s Terms of Use</a></p>.
+<p>Data provided for free by <a href="https://iextrading.com/developer">IEX</a>. View <a href="https://iextrading.com/api-exhibit-a/">IEX’s Terms of Use</a>.</p>
