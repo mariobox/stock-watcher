@@ -22,6 +22,7 @@
       }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>    
+    
   </head>
   <body>
     <div class="navbar navbar-dark bg-dark box-shadow">
@@ -34,23 +35,23 @@
     <div class="container">
       <div>
         <br />
-        <p>Input a list of stock symbols of companies you want to watch, separated by a comma:</p>
+        <p>Input a stock symbol or a list of symbols separated by a comma:</p>
         <form method="GET" action=".">
-          <input type="text" id="symbols" name="symbols">      
+          <input type="text" id="symbols" name="symbols" />      
           <button class="btn btn-primary" type="submit" id="submit">Submit</button>
         </form>
         <br />
-      </div>
-      <div class="row" id='stockinfo'></div>
-      <p>Information refreshes every 10 seconds.</p>
-      <p>Data provided for free by <a href="https://iextrading.com/developer">IEX</a>. View <a href="https://iextrading.com/api-exhibit-a/">IEX’s Terms of Use</a>.</p>
+        <div class="row" id='stockinfo'></div>
+        <br />
+      </div>     
     </div>
     <footer class="container">
       <hr />
       <p class="float-right"><a href="#">Back to top</a></p>
       <p>Made by <a href="https://mariosanchez.org">Mario Sanchez Carrion</a> | <a href="https://github.com/mariobox/stock-watcher">Source Code</a></p>
     </footer>
-    </main>
+   
     <script src="stocks.js"></script>
   </body>
+  
 </html>

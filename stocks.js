@@ -1,70 +1,59 @@
-'use strict'
-
-// create function to load stock info cards
-function refreshData() {
-
 let html = '';
+
+// define an initial default portfolio
 const DEFAULT_PORTFOLIO='wmt,tgt,fcau,f,bac,c,aal,luv';
+
+// create a constant for the stock symbols in the query, or the default portfolio if no query is entered
 const PORTFOLIO = portfolioFromQueryParams() || DEFAULT_PORTFOLIO;
 
-$.getJSON(`https://api.iextrading.com/1.0/stock/market/batch?types=quote,stats&symbols=${PORTFOLIO}`, 
-    function(data) {
-    // convert object of objects into array of objects with jQuery map function so we can iterate over it
-    var stockList = $.map(data, function(value, index) {
-    return [value];
-    });
-    
-    // go through each symbol in the array capturing the info that we want
-    stockList.map((company,i) => { 
+
+// pass that variable to the API URL
+const url = `https://api.worldtradingdata.com/api/v1/stock?symbol=${PORTFOLIO}&api_token=onH6cZpUDVXChT9cbQ6jHuCkgoWPjCmBNRz0Sy5hs4icLbqds5ta1VF0pDpl`;
+
+// start the AJAX request in pure JS
+const Http = new XMLHttpRequest();
+
+Http.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    const body = Http.responseText; // asign the response to the constant body
+    const stockInfo = JSON.parse(body); // parse body to convert response to a JS object
+  
+    // the response object has a member called data, which is an array containing the info of every company whose stock symbol you requested
+    // you can map over each member of the array (company) to get the info you want.
+    stockInfo.data.map((company,i) => { 
+      // first let's format the the info
+      let formattedLatestPrice = '$' + parseFloat(company.price).toFixed(2);
+      let formattedPE = (parseFloat(company.price)/parseFloat(company.eps)).toFixed(2);
+      let formattedEPS = '$' + parseFloat(company.eps).toFixed(2);
+      let formattedMarketCap = formatCap(company.market_cap);
      
-     // format as necessary
-     let formattedLatestPrice = '$' + company.quote.latestPrice.toFixed(2);
-     let formattedChangePercent = (company.quote.changePercent * 100).toFixed(2) + '%';
-     let formattedYield = company.stats.dividendYield.toFixed(2) + '%';
-     let formattedYtdChange = (company.quote.ytdChange * 100).toFixed(1) + '%';
-     let formattedMarketCap = formatCap(company.stats.marketcap);
-     
-     // add colors to positive and negative changes
-     let rgbColorChangePercent = company.quote.changePercent > 0 ? '0,255,0' : '255,0,0';
-     let rgbColorYtdChange = company.quote.ytdChange > 0 ? '0,255,0' : '255,0,0';
-     
-     // build stock info container - using Bootstrap cards
-     html += 
-      `<div class="col-sm-6">
-        <div class="card text-left">
-          <div class="card-body">
-            <h5>${company.quote.companyName} (
-              <a href='https://iextrading.com/apps/stocks/${company.quote.symbol}' target='_blank'>${company.quote.symbol}</a>
-              )
-            </h5>
-            <ul>
-              <li>Latest Price: ${formattedLatestPrice} (
-                <span style="color: rgb(${rgbColorChangePercent});">${formattedChangePercent}</span>
-                )
-              </li>
-              <li>P/E Ratio: ${company.quote.peRatio}</li>
-              <li>Dividend Yield: ${formattedYield}</li>
-              <li>YTD Change: <span style="color: rgb(${rgbColorYtdChange});">${formattedYtdChange}</span></li>
-              <li>Market Cap: ${formattedMarketCap}</li>
-            </ul>
+      // build the containers where each stock info will be displayed
+      html += 
+       `<div class="col-sm-6">
+          <div class="card text-left">
+            <div class="card-body">
+              <h5>${company.name} (${company.symbol})</h5>
+                <ul>
+                  <li>Latest Price: ${formattedLatestPrice}</li>
+                  <li>EPS: ${formattedEPS}</li>
+                  <li>P/E: ${formattedPE}</li>
+                  <li>Market Cap: ${formattedMarketCap}</li>
+                </ul>
+            </div>
           </div>
-        </div>
-      </div>    
-      `
-      
-      // display stock table in web page
-      $('#stockinfo').html(html);
-    });
-    });
-    // refresh the information every 10 seconds
-    setTimeout(refreshData, 10000);
+        </div>`
+      });
+
+   // display the info in the designated location:
+   document.getElementById('stockinfo').innerHTML = html;
+  }
 }
 
-// call function that loads stock info cards
-refreshData();
-  
+// finish the AJAX request
+Http.open("GET", url);
+Http.send();
 
-// format numbers into Trillions, Billions, Millions and Thousands - credits to https://github.com/toddwschneider/stocks for this function
+// helper function to format numbers
 function formatCap(marketCap) {
   if (marketCap === null) return '';
   let value, suffix;
@@ -86,12 +75,9 @@ function formatCap(marketCap) {
   return '$' + value.toFixed(digits) + suffix;
 }
 
-// get symbols from url - credits to https://github.com/toddwschneider/stocks for this function
+// get the query parameters from the address bar and return the symbols
 function portfolioFromQueryParams() {
   if (!window.location.search) return;
-  let params = new URLSearchParams(window.location.search);
-  for (let p of params) {
-     return p[1].split(',').toString();
-  }
+  let stocks = new URLSearchParams(window.location.search);
+  return stocks.get('symbols');
 }
-
