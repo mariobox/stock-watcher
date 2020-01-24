@@ -24,8 +24,14 @@ Http.onreadystatechange = function() {
       // first let's format the the info
       let formattedLatestPrice = '$' + parseFloat(company.price).toFixed(2);
       let formattedPE = (parseFloat(company.price)/parseFloat(company.eps)).toFixed(2);
+      let formattedPercDay = (parseFloat(company.change_pct)) + '%'
+      let formattedPerc52 = ((parseFloat(company.price) / parseFloat(company['52_week_high']) - 1) * 100).toFixed(2) + '%';
       let formattedEPS = '$' + parseFloat(company.eps).toFixed(2);
       let formattedMarketCap = formatCap(company.market_cap);
+
+      // add color formatting
+      let rgbColorChangePercent1 = parseFloat(company.change_pct) > 0 ? '0,128,0' : '255,0,0';
+      let rgbColorChangePercent2 = (((parseFloat(company.price) / parseFloat(company['52_week_high']) -1) * 100).toFixed(2)) > 0 ? '0,128,0' : '255,0,0';
      
       // build the containers where each stock info will be displayed
       html += 
@@ -34,7 +40,8 @@ Http.onreadystatechange = function() {
             <div class="card-body">
               <h5>${company.name} (${company.symbol})</h5>
                 <ul>
-                  <li>Latest Price: ${formattedLatestPrice}</li>
+                  <li>Latest Price: <span>${formattedLatestPrice}</span> | <span style="color:rgb(${rgbColorChangePercent1})"> ${formattedPercDay}</span></li>
+                  <li>Latest Price vs. 52W High: <span style="color:rgb(${rgbColorChangePercent2})">${formattedPerc52}</span></li>
                   <li>EPS: ${formattedEPS}</li>
                   <li>P/E: ${formattedPE}</li>
                   <li>Market Cap: ${formattedMarketCap}</li>
